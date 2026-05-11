@@ -6,11 +6,7 @@
   <title>Для Максима ❤️</title>
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -23,8 +19,8 @@
 
     .background-glow {
       position: absolute;
-      width: 280px;
-      height: 280px;
+      width: 260px;
+      height: 260px;
       background: rgba(255, 105, 135, 0.12);
       border-radius: 50%;
       filter: blur(80px);
@@ -36,29 +32,32 @@
 
     .top {
       position: absolute;
-      top: 14px;
+      top: 12px;
       width: 100%;
       text-align: center;
       z-index: 5;
-      padding: 0 16px;
+      padding: 0 14px;
     }
 
-    .title {
-      font-size: 22px;
-      font-weight: 700;
-      margin-bottom: 6px;
+    .title { font-size: 20px; font-weight: 700; }
+    .subtitle { font-size: 12px; opacity: 0.75; margin-top: 4px; }
+
+    .counter { margin-top: 8px; font-size: 13px; opacity: 0.85; }
+
+    .progress-wrap {
+      width: 80%;
+      height: 8px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 20px;
+      margin: 10px auto 0;
+      overflow: hidden;
     }
 
-    .subtitle {
-      font-size: 13px;
-      opacity: 0.75;
-      line-height: 1.4;
-    }
-
-    .counter {
-      margin-top: 10px;
-      font-size: 14px;
-      opacity: 0.85;
+    .progress {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #ff4d6d, #ff8fa3);
+      transition: width 0.3s;
     }
 
     #game {
@@ -66,16 +65,26 @@
       width: 100%;
       height: 100vh;
       overflow: hidden;
-      z-index: 2;
     }
 
     .heart {
       position: absolute;
-      font-size: 34px;
+      font-size: 32px;
       cursor: pointer;
       animation: fall linear forwards;
-      filter: drop-shadow(0 0 8px rgba(255, 80, 120, 0.4));
+      filter: drop-shadow(0 0 8px rgba(255,80,120,0.4));
       touch-action: manipulation;
+    }
+
+    .type1 { color: #ff4d6d; }
+    .type2 { color: #ff8fa3; }
+    .type3 { color: #ffccd5; }
+
+    /* GOLD HEART */
+    .gold {
+      color: gold !important;
+      font-size: 36px;
+      filter: drop-shadow(0 0 12px gold);
     }
 
     @keyframes fall {
@@ -89,24 +98,21 @@
       top: 50%;
       transform: translate(-50%, -50%);
       width: 90%;
-      background: rgba(0, 0, 0, 0.55);
+      background: rgba(0,0,0,0.6);
       backdrop-filter: blur(10px);
-      border-radius: 18px;
-      padding: 16px;
+      border-radius: 16px;
+      padding: 14px;
       text-align: center;
-      font-size: 16px;
+      font-size: 15px;
       line-height: 1.5;
       opacity: 0;
-      transition: opacity 0.35s ease;
+      transition: opacity 0.3s;
       z-index: 20;
-      pointer-events: none;
     }
 
-    .phrase.show {
-      opacity: 1;
-    }
+    .phrase.show { opacity: 1; }
 
-    .final-screen {
+    .final {
       position: absolute;
       inset: 0;
       background: rgba(0,0,0,0.92);
@@ -115,161 +121,174 @@
       justify-content: center;
       flex-direction: column;
       text-align: center;
-      padding: 24px;
+      padding: 20px;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.8s ease;
+      transition: opacity 1s;
       z-index: 50;
     }
 
-    .final-screen.show {
-      opacity: 1;
-      pointer-events: all;
-    }
+    .final.show { opacity: 1; pointer-events: all; }
 
-    .final-heart {
-      font-size: 64px;
-      animation: pulse 1.5s infinite;
-      margin-bottom: 16px;
+    .big-heart {
+      font-size: 70px;
+      animation: pulse 1.2s infinite;
+      margin-bottom: 10px;
     }
 
     @keyframes pulse {
       0% { transform: scale(1); }
-      50% { transform: scale(1.15); }
+      50% { transform: scale(1.2); }
       100% { transform: scale(1); }
     }
 
     .final-text {
       font-size: 18px;
       line-height: 1.6;
-      max-width: 520px;
+      max-width: 500px;
     }
 
-    .spark {
-      position: absolute;
-      color: #ff7b9c;
-      animation: pop 0.6s forwards;
-      pointer-events: none;
+    .secret {
+      margin-top: 14px;
+      font-size: 16px;
+      opacity: 0;
+      transform: scale(0.9);
+      transition: all 0.8s;
+      color: gold;
     }
 
-    @keyframes pop {
-      from { opacity: 1; transform: scale(0.6); }
-      to { opacity: 0; transform: translateY(-30px) scale(1.6); }
+    .secret.show {
+      opacity: 1;
+      transform: scale(1);
     }
 
-    @media (max-width: 480px) {
-      .title { font-size: 20px; }
-      .subtitle { font-size: 12px; }
-      .phrase { font-size: 15px; }
-      .final-text { font-size: 16px; }
-    }
   </style>
 </head>
 <body>
 
-  <div class="background-glow"></div>
+<div class="background-glow"></div>
 
-  <div class="top">
-    <div class="title">Для Максима ❤️</div>
-    <div class="subtitle">Лови сердечки — читай, что Настя чувствует ✨</div>
-    <div class="counter">Поймано: <span id="count">0</span>/15</div>
+<div class="top">
+  <div class="title">Для Максима ❤️</div>
+  <div class="subtitle">Лови сердечки и наш месяц</div>
+
+  <div class="counter">Поймано: <span id="count">0</span>/15</div>
+
+  <div class="progress-wrap">
+    <div id="progress" class="progress"></div>
+  </div>
+</div>
+
+<div id="game"></div>
+<div id="phrase" class="phrase"></div>
+
+<div id="final" class="final">
+  <div class="big-heart">❤️</div>
+
+  <div class="final-text">
+    Максим, спасибо, что терпишь свою вредину 😌❤️
+    <br><br>
+    И спасибо за этот месяц.
+    <br><br>
+    Мне с тобой очень хорошо.
   </div>
 
-  <div id="game"></div>
-  <div id="phrase" class="phrase"></div>
-
-  <div id="final" class="final-screen">
-    <div class="final-heart">❤️</div>
-    <div class="final-text">
-      Максим, спасибо, что терпишь свою вредину 😌❤️
-      <br><br>
-      И спасибо за этот месяц.
-      <br><br>
-      Мне с тобой очень хорошо.
-    </div>
+  <div id="secret" class="secret">
+    ✨ ты прошёл наш месяц ✨
   </div>
+</div>
 
-  <script>
-    const phrases = [
-      '«Тише, родная» — и я сразу успокаиваюсь ❤️',
-      'ты мой личный «выдыхай»',
-      'ты говоришь, что не милый, но я тебе не верю',
-      'моя вредина — звучит как любовь',
-      'когда ты говоришь «моя жопка» — я почему-то таю 😭❤️',
-      'рядом с тобой даже плакать не страшно',
-      'ты умеешь смешить меня даже тогда, когда я злюсь',
-      'мне спокойно рядом с тобой',
-      'твой голос — мой комфорт',
-      'я скучаю, когда мы без связи',
-      'мы учимся здоровым отношениям вместе',
-      'спасибо, что поддерживаешь меня',
-      '«вот-вот» уже звучит как что-то родное',
-      'ты мой любимый человек для флирта 😏',
-      'рядом с тобой хочется становиться лучше ❤️'
-    ];
+<script>
 
-    const game = document.getElementById('game');
-    const phraseBox = document.getElementById('phrase');
-    const counter = document.getElementById('count');
-    const finalScreen = document.getElementById('final');
+const phrases = [
+'«Тише, родная» ❤️',
+'tы мой «выдыхай»',
+'я таю от «моя жопка» 😭',
+'моя вредина = ты 🫶',
+'рядом с тобой спокойно',
+'ты смешишь меня даже в злости',
+'твой голос — мой комфорт',
+'я скучаю по тебе',
+'мы учимся быть лучше',
+'спасибо за тебя ❤️'
+];
 
-    let score = 0;
-    let phraseIndex = 0;
-    let canClick = true;
+let score = 0;
+let index = 0;
+let goldHits = 0;
 
-    function showPhrase(text) {
-      phraseBox.innerHTML = text;
-      phraseBox.classList.add('show');
-      canClick = false;
+const game = document.getElementById('game');
+const count = document.getElementById('count');
+const phrase = document.getElementById('phrase');
+const progress = document.getElementById('progress');
+const final = document.getElementById('final');
+const secret = document.getElementById('secret');
 
-      setTimeout(() => {
-        phraseBox.classList.remove('show');
-        canClick = true;
-      }, 3000); // увеличено время чтения
+function vibrate(pattern){
+  if(navigator.vibrate){
+    navigator.vibrate(pattern);
+  }
+}
+
+function spawnHeart(){
+  const h = document.createElement('div');
+  h.classList.add('heart');
+
+  const isGold = Math.random() < 0.12;
+
+  if(isGold){
+    h.innerHTML = '💛';
+    h.classList.add('gold');
+  } else {
+    const types = ['type1','type2','type3'];
+    const emojis = ['❤️','💖','💗'];
+    h.classList.add(types[Math.floor(Math.random()*types.length)]);
+    h.innerHTML = emojis[Math.floor(Math.random()*emojis.length)];
+  }
+
+  h.style.left = Math.random()*90 + 'vw';
+  h.style.animationDuration = (4 + Math.random()*3) + 's';
+
+  game.appendChild(h);
+
+  h.addEventListener('click', e => {
+    h.remove();
+
+    vibrate(isGold ? [80,30,120] : 40);
+
+    score++;
+    count.innerText = score;
+
+    progress.style.width = (score/15)*100 + '%';
+
+    phrase.innerText = phrases[index];
+    phrase.classList.add('show');
+
+    setTimeout(()=> phrase.classList.remove('show'), 2500);
+
+    index = (index+1)%phrases.length;
+
+    if(score>=15){
+      setTimeout(()=>{
+        final.classList.add('show');
+        setTimeout(()=> secret.classList.add('show'), 1200);
+      },800);
     }
 
-    function popEffect(x, y) {
-      const spark = document.createElement('div');
-      spark.classList.add('spark');
-      spark.innerHTML = '✨';
-      spark.style.left = x + 'px';
-      spark.style.top = y + 'px';
-      document.body.appendChild(spark);
-      setTimeout(() => spark.remove(), 600);
+    if(isGold){
+      goldHits++;
+      if(goldHits >= 3){
+        secret.innerText = '💛 ты нашёл скрытую любовь 💛';
+      }
     }
+  });
 
-    function createHeart() {
-      const heart = document.createElement('div');
-      heart.classList.add('heart');
-      heart.innerHTML = '❤️';
+  setTimeout(()=> h.remove(), 8000);
+}
 
-      heart.style.left = Math.random() * 85 + 'vw';
-      heart.style.animationDuration = (5 + Math.random() * 2.5) + 's';
+setInterval(spawnHeart, 900);
 
-      game.appendChild(heart);
-
-      heart.addEventListener('click', (e) => {
-        if (!canClick) return;
-
-        popEffect(e.clientX, e.clientY);
-        heart.remove();
-
-        score++;
-        counter.textContent = score;
-
-        showPhrase(phrases[phraseIndex]);
-        phraseIndex = (phraseIndex + 1) % phrases.length;
-
-        if (score >= 15) {
-          setTimeout(() => finalScreen.classList.add('show'), 1000);
-        }
-      });
-
-      setTimeout(() => heart.remove(), 8000);
-    }
-
-    setInterval(createHeart, 1200); // медленнее падение для чтения
-  </script>
+</script>
 
 </body>
 </html>
