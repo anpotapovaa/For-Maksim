@@ -67,6 +67,11 @@
       overflow: hidden;
     }
 
+    /* PAUSE STATE */
+    .paused .heart {
+      animation-play-state: paused !important;
+    }
+
     .heart {
       position: absolute;
       font-size: 32px;
@@ -80,7 +85,6 @@
     .type2 { color: #ff8fa3; }
     .type3 { color: #ffccd5; }
 
-    /* GOLD HEART */
     .gold {
       color: gold !important;
       font-size: 36px;
@@ -98,10 +102,10 @@
       top: 50%;
       transform: translate(-50%, -50%);
       width: 90%;
-      background: rgba(0,0,0,0.6);
+      background: rgba(0,0,0,0.65);
       backdrop-filter: blur(10px);
       border-radius: 16px;
-      padding: 14px;
+      padding: 16px;
       text-align: center;
       font-size: 15px;
       line-height: 1.5;
@@ -161,7 +165,6 @@
       opacity: 1;
       transform: scale(1);
     }
-
   </style>
 </head>
 <body>
@@ -193,9 +196,7 @@
     Мне с тобой очень хорошо.
   </div>
 
-  <div id="secret" class="secret">
-    ✨ ты прошёл наш месяц ✨
-  </div>
+  <div id="secret" class="secret">✨ ты прошёл наш месяц ✨</div>
 </div>
 
 <script>
@@ -215,11 +216,7 @@ const phrases = [
 'спасибо, что поддерживаешь меня',
 '«вот-вот» уже звучит как что-то родное',
 'ты мой любимый человек для флирта 😏',
-'иногда мне кажется, что твой тапочек держит мир в порядке',
-'ты делаешь меня счастливее, чем думаешь',
-'рядом с тобой хочется становиться лучше',
-'я люблю наше «полный газ»',
-'ты стал для меня очень важным ❤️'
+'рядом с тобой хочется становиться лучше ❤️'
 ];
 
 let score = 0;
@@ -233,10 +230,35 @@ const progress = document.getElementById('progress');
 const final = document.getElementById('final');
 const secret = document.getElementById('secret');
 
+let spawnInterval;
+let paused = false;
+
 function vibrate(pattern){
-  if(navigator.vibrate){
-    navigator.vibrate(pattern);
-  }
+  if(navigator.vibrate){ navigator.vibrate(pattern); }
+}
+
+function pauseGame(){
+  paused = true;
+  document.body.classList.add('paused');
+  clearInterval(spawnInterval);
+}
+
+function resumeGame(){
+  paused = false;
+  document.body.classList.remove('paused');
+  spawnInterval = setInterval(spawnHeart, 900);
+}
+
+function showPhrase(text){
+  pauseGame();
+
+  phrase.innerText = text;
+  phrase.classList.add('show');
+
+  setTimeout(()=>{
+    phrase.classList.remove('show');
+    resumeGame();
+  }, 3200);
 }
 
 function spawnHeart(){
@@ -270,32 +292,24 @@ function spawnHeart(){
 
     progress.style.width = (score/15)*100 + '%';
 
-    phrase.innerText = phrases[index];
-    phrase.classList.add('show');
-
-    setTimeout(()=> phrase.classList.remove('show'), 2500);
-
+    showPhrase(phrases[index]);
     index = (index+1)%phrases.length;
 
+    if(isGold) goldHits++;
+
     if(score>=15){
+      pauseGame();
       setTimeout(()=>{
         final.classList.add('show');
         setTimeout(()=> secret.classList.add('show'), 1200);
       },800);
-    }
-
-    if(isGold){
-      goldHits++;
-      if(goldHits >= 3){
-        secret.innerText = '💛 ты нашёл скрытую любовь 💛';
-      }
     }
   });
 
   setTimeout(()=> h.remove(), 8000);
 }
 
-setInterval(spawnHeart, 900);
+spawnInterval = setInterval(spawnHeart, 900);
 
 </script>
 
