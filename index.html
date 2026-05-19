@@ -2,11 +2,15 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Для Максима ❤️</title>
 
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -39,10 +43,22 @@
       padding: 0 14px;
     }
 
-    .title { font-size: 20px; font-weight: 700; }
-    .subtitle { font-size: 12px; opacity: 0.75; margin-top: 4px; }
+    .title {
+      font-size: 20px;
+      font-weight: 700;
+    }
 
-    .counter { margin-top: 8px; font-size: 13px; opacity: 0.85; }
+    .subtitle {
+      font-size: 12px;
+      opacity: 0.75;
+      margin-top: 4px;
+    }
+
+    .counter {
+      margin-top: 8px;
+      font-size: 13px;
+      opacity: 0.85;
+    }
 
     .progress-wrap {
       width: 80%;
@@ -67,7 +83,6 @@
       overflow: hidden;
     }
 
-    /* PAUSE STATE */
     .paused .heart {
       animation-play-state: paused !important;
     }
@@ -92,8 +107,13 @@
     }
 
     @keyframes fall {
-      from { transform: translateY(-10vh); }
-      to { transform: translateY(110vh); }
+      from {
+        transform: translateY(-10vh);
+      }
+
+      to {
+        transform: translateY(110vh);
+      }
     }
 
     .phrase {
@@ -114,7 +134,9 @@
       z-index: 20;
     }
 
-    .phrase.show { opacity: 1; }
+    .phrase.show {
+      opacity: 1;
+    }
 
     .final {
       position: absolute;
@@ -132,7 +154,10 @@
       z-index: 50;
     }
 
-    .final.show { opacity: 1; pointer-events: all; }
+    .final.show {
+      opacity: 1;
+      pointer-events: all;
+    }
 
     .big-heart {
       font-size: 70px;
@@ -141,9 +166,17 @@
     }
 
     @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.2); }
-      100% { transform: scale(1); }
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.2);
+      }
+
+      100% {
+        transform: scale(1);
+      }
     }
 
     .final-text {
@@ -165,17 +198,34 @@
       opacity: 1;
       transform: scale(1);
     }
+
+    @media (max-width: 480px) {
+      .title {
+        font-size: 18px;
+      }
+
+      .final-text {
+        font-size: 16px;
+      }
+
+      .phrase {
+        font-size: 14px;
+      }
+    }
   </style>
 </head>
+
 <body>
 
 <div class="background-glow"></div>
 
 <div class="top">
   <div class="title">Для Максима ❤️</div>
-  <div class="subtitle">Лови сердечки и наш месяц</div>
+  <div class="subtitle">Лови сердечки и собирай наш месяц</div>
 
-  <div class="counter">Поймано: <span id="count">0</span>/15</div>
+  <div class="counter">
+    Поймано: <span id="count">0</span>/20
+  </div>
 
   <div class="progress-wrap">
     <div id="progress" class="progress"></div>
@@ -183,8 +233,14 @@
 </div>
 
 <div id="game"></div>
+
 <div id="phrase" class="phrase"></div>
-<div id="goldMessage" class="phrase" style="border:1px solid rgba(255,215,0,0.35); color: gold;"></div>
+
+<div
+  id="goldMessage"
+  class="phrase"
+  style="border:1px solid rgba(255,215,0,0.35); color: gold;"
+></div>
 
 <div id="final" class="final">
   <div class="big-heart">❤️</div>
@@ -197,148 +253,209 @@
     Мне с тобой очень хорошо.
   </div>
 
-  <div id="secret" class="secret">✨ ты прошёл наш месяц ✨</div>
+  <div id="secret" class="secret">
+    ✨ ты прошёл наш месяц ✨
+  </div>
 </div>
 
 <script>
 
 const phrases = [
-'«Тише, родная» — и я сразу успокаиваюсь ❤️',
-'ты мой личный «выдыхай»',
-'ты говоришь, что не милый, но я тебе не верю',
-'моя вредина — звучит как любовь',
-'когда ты говоришь «моя жопка» — я почему-то таю 😭❤️',
-'рядом с тобой даже плакать не страшно',
-'ты умеешь смешить меня даже тогда, когда я злюсь',
-'мне спокойно рядом с тобой',
-'твой голос — мой комфорт',
-'я поняла, как скучаю по тебе, когда пропала связь',
-'мы учимся здоровым отношениям вместе',
-'спасибо, что поддерживаешь меня',
-'«вот-вот» уже звучит как что-то родное',
-'ты мой любимый человек для флирта 😏',
-'рядом с тобой хочется становиться лучше ❤️'
+  '«Тише, родная» — и я сразу успокаиваюсь ❤️',
+  'ты мой личный «выдыхай»',
+  'ты говоришь, что не милый, но я тебе не верю',
+  'моя вредина — звучит как любовь',
+  'когда ты говоришь «моя жопка» — я почему-то таю 😭❤️',
+  'рядом с тобой даже плакать не страшно',
+  'ты умеешь смешить меня даже тогда, когда я злюсь',
+  'мне спокойно рядом с тобой',
+  'твой голос — мой комфорт',
+  'я поняла, как скучаю по тебе, когда пропала связь',
+  'мы учимся здоровым отношениям вместе',
+  'спасибо, что поддерживаешь меня',
+  '«вот-вот» уже звучит как что-то родное',
+  'ты мой любимый человек для флирта 😏',
+  'иногда мне кажется, что твой тапочек держит мир в порядке',
+  'ты делаешь меня счастливее, чем думаешь',
+  'рядом с тобой хочется становиться лучше',
+  'я люблю наше «полный газ»',
+  'ты стал для меня очень важным ❤️',
+  'ты каким-то образом стал моим спокойствием',
+  'мне нравится, что рядом с тобой можно быть собой',
+  'иногда я читаю твои сообщения и улыбаюсь как дурочка 😭',
+  'я смеюсь, когда ты пишешь, что пошёл бить кого-то тапочком',
+  'мне нравятся твои подъёбы 😭❤️'
 ];
+
+const goldPhrases = [
+  'ну всё…',
+  'теперь ты',
+  'никуда не убежишь 😌❤️'
+];
+
+const goldSpawnMoments = [4, 9, 13];
 
 let score = 0;
 let index = 0;
 let goldHits = 0;
-
-const goldPhrases = [
-  'ну всё…',
-  'ты стал',
-  'очень важным для меня ❤️'
-];
+let paused = false;
 
 const game = document.getElementById('game');
 const count = document.getElementById('count');
 const phrase = document.getElementById('phrase');
 const progress = document.getElementById('progress');
 const final = document.getElementById('final');
-const goldMessage = document.getElementById('goldMessage');
 const secret = document.getElementById('secret');
+const goldMessage = document.getElementById('goldMessage');
 
-let spawnInterval;
-let paused = false;
-
-function vibrate(pattern){
-  if(navigator.vibrate){ navigator.vibrate(pattern); }
+function vibrate(pattern) {
+  if (navigator.vibrate) {
+    navigator.vibrate(pattern);
+  }
 }
 
-function pauseGame(){
+function pauseGame() {
   paused = true;
   document.body.classList.add('paused');
-  clearInterval(spawnInterval);
 }
 
-function resumeGame(){
+function resumeGame() {
   paused = false;
   document.body.classList.remove('paused');
-  spawnInterval = setInterval(spawnHeart, 900);
 }
 
-function showPhrase(text){
+function showPhrase(text) {
   pauseGame();
 
   phrase.innerText = text;
   phrase.classList.add('show');
 
-  setTimeout(()=>{
+  setTimeout(() => {
     phrase.classList.remove('show');
     resumeGame();
   }, 3200);
 }
 
-function showGoldMessage(text){
+function showGoldMessage(text) {
   pauseGame();
 
   goldMessage.innerText = text;
   goldMessage.classList.add('show');
 
-  vibrate([120,40,180]);
+  vibrate([120, 40, 180]);
 
-  setTimeout(()=>{
+  setTimeout(() => {
     goldMessage.classList.remove('show');
     resumeGame();
   }, 3600);
-}, 3200);
 }
 
-function spawnHeart(){
+function spawnHeart() {
+
+  if (paused) return;
+
   const h = document.createElement('div');
   h.classList.add('heart');
 
-  const isGold = Math.random() < 0.12;
+  const nextHeartNumber = score + goldHits + 1;
 
-  if(isGold){
+  const isGold =
+    goldSpawnMoments.includes(nextHeartNumber);
+
+  if (isGold) {
+
     h.innerHTML = '💛';
     h.classList.add('gold');
+
   } else {
-    const types = ['type1','type2','type3'];
-    const emojis = ['❤️','💖','💗'];
-    h.classList.add(types[Math.floor(Math.random()*types.length)]);
-    h.innerHTML = emojis[Math.floor(Math.random()*emojis.length)];
+
+    const types = ['type1', 'type2', 'type3'];
+    const emojis = ['❤️', '💖', '💗'];
+
+    h.classList.add(
+      types[Math.floor(Math.random() * types.length)]
+    );
+
+    h.innerHTML =
+      emojis[Math.floor(Math.random() * emojis.length)];
   }
 
-  h.style.left = Math.random()*90 + 'vw';
-  h.style.animationDuration = (4 + Math.random()*3) + 's';
+  h.style.left = Math.random() * 85 + 'vw';
+
+  h.style.animationDuration =
+    (5 + Math.random() * 2) + 's';
 
   game.appendChild(h);
 
-  h.addEventListener('click', e => {
+  h.addEventListener('click', () => {
+
     h.remove();
 
     vibrate(isGold ? [80,30,120] : 40);
 
-    score++;
-    count.innerText = score;
+    if (!isGold) {
 
-    progress.style.width = (score/15)*100 + '%';
+      score++;
+      count.innerText = score;
+
+      progress.style.width =
+        (score / 15) * 100 + '%';
+    }
 
     showPhrase(phrases[index]);
-    index = (index+1)%phrases.length;
 
-    if(isGold){
+    index = (index + 1) % phrases.length;
+
+    if (isGold) {
+
       goldHits++;
 
-      if(goldHits <= goldPhrases.length){
-        showGoldMessage(goldPhrases[goldHits - 1]);
+      if (goldHits <= goldPhrases.length) {
+
+        showGoldMessage(
+          goldPhrases[goldHits - 1]
+        );
       }
     }
 
-    if(score>=15){
+    if (score >= 15) {
+
       pauseGame();
-      setTimeout(()=>{
+
+      setTimeout(() => {
+
         final.classList.add('show');
-        setTimeout(()=> secret.classList.add('show'), 1200);
-      },800);
+
+        setTimeout(() => {
+          secret.classList.add('show');
+        }, 1200);
+
+      }, 800);
     }
   });
 
-  setTimeout(()=> h.remove(), 8000);
+  setTimeout(() => {
+    h.remove();
+  }, 9000);
 }
 
-spawnInterval = setInterval(spawnHeart, 900);
+function startSpawning() {
+
+  if (paused) {
+
+    setTimeout(startSpawning, 1000);
+    return;
+  }
+
+  spawnHeart();
+
+  const delay =
+    2600 + Math.random() * 1200;
+
+  setTimeout(startSpawning, delay);
+}
+
+startSpawning();
 
 </script>
 
