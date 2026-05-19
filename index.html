@@ -387,52 +387,50 @@ function spawnHeart() {
 
   game.appendChild(h);
 
-  h.addEventListener('click', () => {
+h.addEventListener('click', () => {
 
-    h.remove();
+  h.remove();
 
-    vibrate(isGold ? [80,30,120] : 40);
+  vibrate(isGold ? [80,30,120] : 40);
 
-    if (!isGold) {
+  // 💛 ЗОЛОТО
+  if (isGold) {
 
-      score++;
-      count.innerText = score;
+    goldHits++;
 
-      progress.style.width =
-        (score / 15) * 100 + '%';
+    if (goldHits <= goldPhrases.length) {
+      showGoldMessage(goldPhrases[goldHits - 1]);
     }
 
-    showPhrase(phrases[index]);
+    return; // ❗ важно: выходим, чтобы не было обычной фразы
+  }
 
-    index = (index + 1) % phrases.length;
+  // ❤️ ОБЫЧНОЕ СЕРДЦЕ
+  score++;
+  count.innerText = score;
 
-    if (isGold) {
+  progress.style.width =
+    (score / 20) * 100 + '%';
 
-      goldHits++;
+  showPhrase(phrases[index]);
 
-      if (goldHits <= goldPhrases.length) {
+  index = (index + 1) % phrases.length;
 
-        showGoldMessage(
-          goldPhrases[goldHits - 1]
-        );
-      }
-    }
+  if (score >= 20) {
 
-    if (score >= 15) {
+    pauseGame();
 
-      pauseGame();
+    setTimeout(() => {
+
+      final.classList.add('show');
 
       setTimeout(() => {
+        secret.classList.add('show');
+      }, 1200);
 
-        final.classList.add('show');
-
-        setTimeout(() => {
-          secret.classList.add('show');
-        }, 1200);
-
-      }, 800);
-    }
-  });
+    }, 800);
+  }
+});
 
   setTimeout(() => {
     h.remove();
