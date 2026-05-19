@@ -184,6 +184,7 @@
 
 <div id="game"></div>
 <div id="phrase" class="phrase"></div>
+<div id="goldMessage" class="phrase" style="border:1px solid rgba(255,215,0,0.35); color: gold;"></div>
 
 <div id="final" class="final">
   <div class="big-heart">❤️</div>
@@ -223,11 +224,18 @@ let score = 0;
 let index = 0;
 let goldHits = 0;
 
+const goldPhrases = [
+  'ну всё…',
+  'ты стал',
+  'очень важным для меня ❤️'
+];
+
 const game = document.getElementById('game');
 const count = document.getElementById('count');
 const phrase = document.getElementById('phrase');
 const progress = document.getElementById('progress');
 const final = document.getElementById('final');
+const goldMessage = document.getElementById('goldMessage');
 const secret = document.getElementById('secret');
 
 let spawnInterval;
@@ -259,6 +267,21 @@ function showPhrase(text){
     phrase.classList.remove('show');
     resumeGame();
   }, 3200);
+}
+
+function showGoldMessage(text){
+  pauseGame();
+
+  goldMessage.innerText = text;
+  goldMessage.classList.add('show');
+
+  vibrate([120,40,180]);
+
+  setTimeout(()=>{
+    goldMessage.classList.remove('show');
+    resumeGame();
+  }, 3600);
+}, 3200);
 }
 
 function spawnHeart(){
@@ -295,7 +318,13 @@ function spawnHeart(){
     showPhrase(phrases[index]);
     index = (index+1)%phrases.length;
 
-    if(isGold) goldHits++;
+    if(isGold){
+      goldHits++;
+
+      if(goldHits <= goldPhrases.length){
+        showGoldMessage(goldPhrases[goldHits - 1]);
+      }
+    }
 
     if(score>=15){
       pauseGame();
